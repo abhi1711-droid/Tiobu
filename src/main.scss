@@ -1,0 +1,28 @@
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: rgb(243, 233, 233);
+  color: rgb(108, 205, 200);
+  padding: 10px;
+  margin: 10px;
+  font-size: 20px;  
+}
+
+.creatorimg {
+  width: 80px;
+  border-radius: 7px;
+  margin: 5%;
+}
+
+.cardf{
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(160px, 1fr));
+}
+
+.mod {
+  max-width: 100px;
+  max-height: 200px;
+}
+
+.entry {
+  margin-left: 20px;
+}

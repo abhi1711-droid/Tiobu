@@ -11,6 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import { InputLabel, Input, Form } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import {db} from './misc/firestore'
 
 const currencies = [
   {
@@ -58,7 +59,7 @@ function TModal(props) {
   const [currency, setCurrency] = React.useState();
 
   const handleChange = name => e =>{
-    setFormData(e.target.value)
+    setFormData({...formdata, [name] : e.target.value})
    };
 
   const [formdata , setFormData] = React.useState({
@@ -66,6 +67,20 @@ function TModal(props) {
     name : '',
     curr : '₹',
   });
+
+  const Donation = document.querySelector(".donation")
+
+  const handlesubmit = (e) => {
+  e.preventDefault();
+  db.collection('Donation').doc().set({
+    Creator : props.data.name,
+    Name : formdata.name,
+    Amount : formdata.money,
+    Currency : formdata.curr
+  }).then(  (res) => {
+      Donation.reset()
+  });
+}; 
   
   return (
     <>
@@ -105,7 +120,7 @@ function TModal(props) {
         <h5>Send your love to {props.data.name}</h5>
         <h5> Become a real Fan </h5>
         <br/>
-        <form id = "donation">
+        <form class = "donation" onSubmit = {handlesubmit}>
         
           
           <TextField
@@ -124,13 +139,13 @@ function TModal(props) {
             <t/>   <t/>
           <FormControl>
             <InputLabel htmlFor="my-input" >Amount</InputLabel>
-            <Input id="amount" onChange={handleChange('money')} class= "amount" required />
+            <Input id="amount" type= "number" onChange={handleChange('money')} class= "amount" required />
           </FormControl>
             <br/>
             <br/>
           <FormControl>
             <InputLabel htmlFor="my-input">Name</InputLabel>
-            <Input id="name" aria-describedby="my-helper-text" class="name" />
+            <Input id="name" aria-describedby="my-helper-text" class="name" onChange={handleChange('name')}/>
           </FormControl>
             <br/>
             <br/>
@@ -140,7 +155,7 @@ function TModal(props) {
           </FormControl>
             <br/>
             <br/>
-          <Button id= "submit" class = "submit" type= "submit" variant="contained" color="primary" styles={{'justify-content': 'center' , 'color' : 'blue'}}>
+          <Button  class = "submit" type= "submit" variant="contained" color="primary" styles={{'justify-content': 'center' , 'color' : 'blue'}}>
           Donate {formdata.curr}{formdata.money}
         </Button>
           </form>
@@ -150,6 +165,7 @@ function TModal(props) {
 
       </>
   );
+
 }
 
 export default TModal

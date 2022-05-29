@@ -9,10 +9,11 @@ const Submit = document.querySelector(".submit");
 Submit.addEventListener("click" , (e) => {
   e.preventDefault();
   db.collection('Donation').doc().set({
-    Name : Name.value,
-    Amount : Amount.value,
-    Message : Message.value,
-  }).then(  () => {
+    Name : "Abhishek",
+    Amount : 45,
+    Message : "hi"
+  }).then(  (res) => {
+    console.log(res);
     Donation.reset();
   });
 }); 

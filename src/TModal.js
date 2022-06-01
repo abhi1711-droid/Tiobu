@@ -52,9 +52,20 @@ const style = {
 };
 
 function TModal(props) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+
+  const [open, setOpen] = React.useState(true);
+  
+  const donate = document.getElementById(".donation-form")
+  const handleOpen = () => {
+    setOpen(true);
+    localStorage.setItem("tap",true);
+    localStorage.setItem("id",props.data.id);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    localStorage.setItem("tap",false);
+    localStorage.setItem("id",-1);
+  };
 
   const [currency, setCurrency] = React.useState();
 
@@ -78,11 +89,22 @@ function TModal(props) {
     Amount : formdata.money,
     Currency : formdata.curr
   }).then(  (res) => {
-      Donation.reset()
+      Donation.reset();
   });
 }; 
+    
+  React.useEffect(() => {
+    // console.log(props.toggle , props.id , props.data.id)
+
+    if ((props.toggle === true )&& (props.id === props.data.id)){
+      setOpen(true);
+    }
+    else{
+      setOpen(false);
+    }
+  },[]);
   
-  return (
+  return ( 
     <>
       <Grid item xs={6} md={3} sm={6} onClick={handleOpen}>
        <Card sx={{ maxWidth: 200  }}>
@@ -101,8 +123,9 @@ function TModal(props) {
       </Grid>
 
       {/* Form */}
-
       <Modal
+        id = "donation-form"
+        class = "donation-form"
         open={open}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
